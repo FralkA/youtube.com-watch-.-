@@ -1,7 +1,7 @@
 from flask import Flask, request
 import requests
 
-
+app = Flask(__name__)
 
 # Remplacez 'VOTRE_WEBHOOK_URL' par l'URL réel de votre webhook Discord
 WEBHOOK_URL = 'https://discord.com/api/webhooks/1189581246829957180/aRFpdCSf9AgfhrzGP0F5cjWxu1lG5-hlejBf3se-7BISIbx4VRS6aD-jiiy4BwpHgqZo'
@@ -26,4 +26,4 @@ def send_to_discord_webhook(ip_address):
         print(f"Erreur lors de l'envoi de l'adresse IP au webhook Discord : {str(e)}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
